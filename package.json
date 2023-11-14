@@ -9,7 +9,7 @@
     "test": "jest --forceExit testing/",
     "test:coverage": "jest --forceExit --coverage testing/"
   },
-  "author": "Moch Rafi Riadi",
+  "author": "Mohammad Faruq Afif",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
