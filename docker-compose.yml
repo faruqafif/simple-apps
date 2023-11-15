@@ -35,6 +35,6 @@ services:
     environment:
       - PMA_HOST=db
 
-volume:
+volumes:
   app-data:
   db-data:
