@@ -1,0 +1,47 @@
+pipeline {
+    agent {
+     label 'server1-faruqafif'
+    }
+
+    tools {
+     nodejs 'nodejs'
+    }
+
+    stages {
+        stage('Cgencout SCM') {
+            steps {
+                git branch: 'main', url: 'https://github.com/faruqafif/simple-apps.git'
+            }
+        }
+        stage('Build Code') {
+            steps {
+                sh '''cd apps
+                npm install'''
+            }
+        }
+        stage('Testing Apps') {
+            steps {
+                sh '''cd apps
+                npm install
+                npm run test:coverage'''
+            }
+        }
+        stage('Analys & Review Code') {
+            steps {
+                sh '''cd apps
+                sonar-scanner \\
+                -Dsonar.projectKey=simple-apps \\
+                -Dsonar.sources=. \\
+                -Dsonar.host.url=http://172.23.2.242:9000 \\
+                -Dsonar.login=sqp_18b83150ce6c8231423931685399c72a8205a1cf'''
+            }
+        }
+        stage('Deploying Apps') {
+            steps {
+                sh '''sed -i \'s/localhost/db/g\' apps/.env
+                docker compose build
+                docker compose up -d'''
+            }
+        }
+    }
+}
